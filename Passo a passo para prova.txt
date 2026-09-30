@@ -1,0 +1,244 @@
+Passo 1: Crie o seu projeto Console do visual studio community
+Passo 2: Coloque os dados de Senac.Cadastro de solução e projeto de Senac
+Passo 2: Crie a classe que será a fundação "Pessoa.cs" é um exemplo
+
+Código:
+using System;
+
+namespace Senac.Cadastro 
+{
+    public class Pessoa 
+    {
+        // As variáveis com get e set (O molde)
+        public string Nome { get; set; }
+        public string Senha { get; set; }
+
+        // O Construtor: a porta de entrada dos dados
+        public Pessoa(string nome, string senha) 
+        {
+            Nome = nome;
+            Senha = senha;
+        }
+    }
+}
+
+Agora faça a peça especializada "Usuario.cs"
+
+Código:
+
+using System;
+
+namespace Senac.Cadastro 
+{
+    // O sinal ":" significa HERANÇA. Usuario herda de Pessoa.
+    public class Usuario : Pessoa 
+    {
+        // O construtor pega os dados e repassa direto para a fundação através do ": base"
+        public Usuario(string nome, string senha) : base(nome, senha) 
+        {
+            // Fica totalmente vazio por dentro. A classe base (Pessoa) já salvou os dados.
+        }
+    }
+}
+
+e depois complete o program.cs que é nativo:
+
+using System;
+using System.Collections.Generic;
+using Senac.Cadastro; // ABRINDO A GAVETA PARA ENXERGAR O USUARIO!
+
+class Program
+{
+    static void Main()
+    {
+        // 1. O ESTOQUE
+        List<Usuario> listaUsuarios = new List<Usuario>();
+        string continuar = "s";
+
+        // 2. A LINHA DE MONTAGEM (O LOOP DE CADASTRO)
+        while (continuar.ToLower() == "s")
+        {
+            Console.Clear();
+            
+            Console.Write("Digite o nome do usuário: ");
+            string nomeDigitado = Console.ReadLine();
+
+            Console.Write("Digite a senha do usuário: ");
+            string senhaDigitada = Console.ReadLine();
+
+            // FABRICANDO O OBJETO E ADICIONANDO NA LISTA
+            // É aqui que o "new" entra em ação. Sem ele, a lista fica vazia.
+            listaUsuarios.Add(new Usuario(nomeDigitado, senhaDigitada));
+
+            Console.Write("\nDeseja cadastrar outro usuário? (s/n): ");
+            continuar = Console.ReadLine();
+        }
+
+        // 3. A INSPEÇÃO FINAL (O LOOP DE EXIBIÇÃO)
+        Console.WriteLine("\n--- LISTA DE USUÁRIOS CADASTRADOS ---");
+        
+        foreach (Usuario u in listaUsuarios)
+        {
+            // O 'u' consegue imprimir Nome e Senha porque herdou lá da classe Pessoa
+            Console.WriteLine($"Nome: {u.Nome} | Senha: {u.Senha}");
+        }
+    }
+}
+
+Seu checklist mental para antes de entregar a prova:
+
+Eu coloquei as classes filhas e pais dentro do mesmo namespace?
+
+Eu chamei esse namespace com using no topo do meu Program.cs?
+
+Eu usei a palavra new antes de dar um .Add() na minha lista?
+
+Eu repassei as variáveis usando o : base() na classe filha?
+
+
+==============================================================================================================================================================================================================================
+Passo a passo agora do mesmo projeto passado, mas junto de CPF e EMAIL
+
+A Regra de Ouro
+
+Não tente escrever tudo de uma vez. Construa as peças na ordem certa:
+
+A Fundação (Classe Pai)
+
+A Peça Específica (Classe Filha)
+
+O Motor e o Estoque (Program.cs com a Lista)
+
+1. Criando a Classe Pai (Pessoa.cs)
+
+A classe pai dita as regras do que todo mundo deve ter.
+
+Crie as variáveis com { get; set; }.
+
+Crie o Construtor: Ele tem o mesmo nome da classe e serve para receber os dados quando o objeto for criado.
+
+Vincule as variáveis do construtor com as variáveis da classe (Nome = nome;).
+
+2. Criando a Classe Filha (Usuario.cs)
+
+A classe filha herda as características da classe pai para não precisarmos repetir código.
+
+Use os dois pontos : para herdar (ex: public class Usuario : Pessoa).
+
+Crie o Construtor recebendo todos os dados.
+
+O segredo: use : base(...) logo após os parênteses do construtor para arremessar esses dados para a classe pai. Não faça nada dentro das chaves { }.
+
+3. Montando o Programa Principal (Program.cs)
+
+Aqui é onde a interação acontece.
+
+Gaveta: Não esqueça do using NomeDoSeuNamespace; no topo para o programa enxergar suas classes.
+
+Estoque: Declare sua lista antes do loop de repetição: List<Usuario> lista = new List<Usuario>();.
+
+A Fábrica: Depois de ler os dados com Console.ReadLine(), você precisa usar a palavra new para fabricar o objeto antes de guardar na lista: lista.Add(new Usuario(...));.
+
+A Vitrine: Use o foreach (Usuario u in lista) para percorrer o estoque e imprimir os dados na tela.
+
+🚨 Checklist Mental de Revisão (Antes de entregar a prova):
+
+[ ] Coloquei namespace Senac.Cadastro em todas as classes?
+
+[ ] Importei o namespace com using Senac.Cadastro; no Program.cs?
+
+[ ] O construtor da classe filha está usando o : base() com as variáveis na ordem certa?
+
+[ ] Lembrei de usar o new Usuario(...) dentro do parênteses do .Add()?
+
+Código Pessoa.cs:
+
+using System;
+
+namespace Senac.Cadastro 
+{
+    public class Pessoa 
+    {
+        // 1. O Molde: Agora com 4 características
+        public string Nome { get; set; }
+        public string Senha { get; set; }
+        public string Cpf { get; set; }
+        public string Email { get; set; }
+
+        // 2. A Porta de Entrada (Construtor): Recebe os 4 dados
+        public Pessoa(string nome, string senha, string cpf, string email) 
+        {
+            Nome = nome;
+            Senha = senha;
+            Cpf = cpf;
+            Email = email;
+        }
+    }
+}
+
+Código Usuário:
+using System;
+
+namespace Senac.Cadastro 
+{
+    // 1. A Herança: Usuario herda de Pessoa
+    public class Usuario : Pessoa 
+    {
+        // 2. O Construtor: Recebe os 4 dados e os arremessa para a classe Pessoa usando o "base"
+        public Usuario(string nome, string senha, string cpf, string email) : base(nome, senha, cpf, email) 
+        {
+            // Fica vazio, a fundação (Pessoa) já lidou com as atribuições.
+        }
+    }
+}
+
+Código Program:
+using System;
+using System.Collections.Generic;
+using Senac.Cadastro; // A chave que abre a gaveta das nossas classes
+
+class Program
+{
+    static void Main()
+    {
+        // 1. O ESTOQUE
+        List<Usuario> listaUsuarios = new List<Usuario>();
+        string continuar = "s";
+
+        // 2. A LINHA DE MONTAGEM (O LOOP DE CADASTRO)
+        while (continuar.ToLower() == "s")
+        {
+            Console.Clear();
+            
+            Console.Write("Digite o nome: ");
+            string nomeDigitado = Console.ReadLine();
+
+            Console.Write("Digite a senha: ");
+            string senhaDigitada = Console.ReadLine();
+
+            Console.Write("Digite o CPF: ");
+            string cpfDigitado = Console.ReadLine();
+
+            Console.Write("Digite o Email: ");
+            string emailDigitado = Console.ReadLine();
+
+            // A FÁBRICA: Cria o objeto com os 4 dados e joga na lista
+            listaUsuarios.Add(new Usuario(nomeDigitado, senhaDigitada, cpfDigitado, emailDigitado));
+
+            Console.Write("\nDeseja cadastrar outro usuário? (s/n): ");
+            continuar = Console.ReadLine();
+        }
+
+        // 3. A INSPEÇÃO FINAL (O LOOP DE EXIBIÇÃO)
+        Console.WriteLine("\n--- LISTA DE USUÁRIOS CADASTRADOS ---");
+        
+        foreach (Usuario u in listaUsuarios)
+        {
+            // O objeto 'u' acessa tudo tranquilamente por conta da herança
+            Console.WriteLine($"Nome: {u.Nome} | Senha: {u.Senha} | CPF: {u.Cpf} | Email: {u.Email}");
+            Console.WriteLine("--------------------------------------------------");
+        }
+    }
+}
+
+
